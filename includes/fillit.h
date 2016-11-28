@@ -3,16 +3,22 @@
 
 #include "libft.h"
 
-typedef struct	s_tetri
+typedef char	*t_tetri;
+
+typedef struct	s_ress
 {
-	char		coord[4][2]; 
-}				t_tetri;
+	int			fd;
+	t_llist		*lst;
+}				t_ress;
 
 void		die(char *str);
-void		close_and_die(int fd, char *str);
-void		parse_input(char *filename, t_llist *lst_tetris);
-t_tetri		*parse_tetri(char *buf, size_t len, int fd);
-void		check_bf(char *bf, size_t len, int fd);
-void		check_count(char *bf, int fd);
+void		free_and_die(t_ress *p_ress, char *str);
+void		parse_input(char *filename, t_ress *p_ress);
+t_tetri		parse_tetri(char *buf, size_t len, t_ress *p_ress);
+void		check_bf(char *bf, size_t len, t_ress *p_ress);
+void		check_count(char *bf, t_ress *p_ress);
+int			get_origin(char *bf);
+
+void		print(void *tetri);
 
 #endif

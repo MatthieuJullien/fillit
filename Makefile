@@ -21,8 +21,8 @@ obj:
 	@mkdir -p $(OBJDIR)
 
 $(NAME): $(LIBFTFILE) $(OBJ)
-	@$(CC) $(CFLAGS) $^ -o $@ -I $(INCDIR) $(LIBFT)
 	@echo "Compiling" $(NAME)
+	@$(CC) $(CFLAGS) $^ -o $@ -I $(INCDIR) $(LIBFT)
 
 $(LIBFTFILE):
 	@echo "Making libft.a"
@@ -30,12 +30,12 @@ $(LIBFTFILE):
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@echo "Compiling" $@
-	@$(CC) $(CFLAGS) -c -o $@ $< -I $(INCDIR) -I $(LIBFTDIR) $(LIBFT)
+	@$(CC) $(CFLAGS) -c -o $@ $< -I $(INCDIR) -I $(LIBFTDIR)
 
 clean:
+	@make -C $(LIBFTDIR) clean
 	@echo "Cleaning" $(NAME)
 	@/bin/rm -rf $(OBJDIR)
-	@make -C $(LIBFTDIR) clean
 
 
 fclean:

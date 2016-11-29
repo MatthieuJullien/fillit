@@ -66,30 +66,23 @@ void		parse_input(char *filename, t_ress *p_ress)
 t_tetri		parse_tetri(char *bf, size_t len, t_ress *p_ress)
 {
 	t_tetri		tetri;
+	int			o;
 	int			i;
-	int			coord;
 	int			block;
 
 	check_bf(bf, len, p_ress);
 	tetri = ft_strnew(8);
-	i = get_origin(bf);
-	printf("i=%d\n", i);
-	coord = 0;
+	o = get_origin(bf);
+	i = o;
 	block = 0;
-	while (i < 19)
+	while (block < 4)
 	{
-		while (bf[i] != '\n')
+		if (bf[i] == '#')
 		{
-			if (bf[i] == '#')
-			{
-				tetri[block * 2] = coord % 10 + '0';
-				tetri[block * 2 + 1] = coord / 10 + '0';
-				block++;
-			}
-			coord += 1;
-			i++;
+			tetri[block * 2] = (i - o) % 5 + '0';
+			tetri[block * 2 + 1] = (i - o) / 5 + '0';
+			block++;
 		}
-		coord = coord + 10 - (coord % 10);
 		i++;
 	}
 	//check_tetri(tetri, p_ress);
@@ -99,55 +92,56 @@ t_tetri		parse_tetri(char *bf, size_t len, t_ress *p_ress)
 
 int			get_origin(char *bf)
 {
+	t_coord	coord;
 	int		i;
-	int		j;
-	int		origin;
 
+	coord.x = 0;
+	coord.y = 0;
+	coord.min_x = 4;
+	coord.min_y = 4;
 	i = 0;
-	j = 0;
-	origin = -1;
-	while (bf[i] != '#')
-		i++;
-	while (bf[i + 1 + j] != '\n')
+	while (i < 19)
 	{
-		if (bf[i + j] == '#')
+		if (bf[i] == '#')
 		{
-			origin = i;
-			break;
+			coord.min_x = (coord.min_x > coord.x) ? coord.x : coord.min_x;
+			coord.min_y = (coord.min_y > coord.y) ? coord.y : coord.min_y;
 		}
-		j++;
+		if (bf[i] == '\n')
+		{
+			coord.y++;
+			coord.x = -1;
+		}
+		i++;
+		coord.x++;
 	}
-	if (origin == -1)
-	{
-		while (bf[i + j] != '#')
-			j++;
-		origin = i + j - 5;
-	}
-	return (origin);
+	return (coord.min_x + coord.min_y * 5);
 }
-/*
+
 void		check_tetri(t_tetri tetri, t_ress *p_ress)
 {
-	if ((ft_strcmp(tetri, "00102030") != 0)
-			|| (ft_strcmp(tetri, "00010203") != 0)
-			|| (ft_strcmp(tetri, "00011011") != 0)
-			|| (ft_strcmp(tetri, "") != 0)
-			|| (ft_strcmp(tetri, "") != 0)
-			|| (ft_strcmp(tetri, "") != 0)
-			|| (ft_strcmp(tetri, "") != 0)
-			|| (ft_strcmp(tetri, "") != 0)
-			|| (ft_strcmp(tetri, "") != 0)
-			|| (ft_strcmp(tetri, "") != 0)
-			|| (ft_strcmp(tetri, "") != 0)
-			|| (ft_strcmp(tetri, "") != 0)
-			|| (ft_strcmp(tetri, "") != 0)
-			|| (ft_strcmp(tetri, "") != 0)
-			|| (ft_strcmp(tetri, "") != 0)
-			|| (ft_strcmp(tetri, "") != 0)
-			|| (ft_strcmp(tetri, "") != 0)
-			|| (ft_strcmp(tetri, "") != 0))
+   if ((ft_strcmp(tetri, "00102030") != 0)
+   || (ft_strcmp(tetri, "00010203") != 0)
+   || (ft_strcmp(tetri, "00100111") != 0)
+   || (ft_strcmp(tetri, "00102001") != 0)
+   || (ft_strcmp(tetri, "00101112") != 0)
+   || (ft_strcmp(tetri, "20011121") != 0)
+   || (ft_strcmp(tetri, "00010112") != 0)
+   || (ft_strcmp(tetri, "00102021") != 0)
+   || (ft_strcmp(tetri, "10110212") != 0)
+   || (ft_strcmp(tetri, "00011121") != 0)
+   || (ft_strcmp(tetri, "00100102") != 0)
+   || (ft_strcmp(tetri, "10200111") != 0)
+   || (ft_strcmp(tetri, "00011112") != 0)
+   || (ft_strcmp(tetri, "00101121") != 0)
+   || (ft_strcmp(tetri, "10011102") != 0)
+   || (ft_strcmp(tetri, "10011121") != 0)
+   || (ft_strcmp(tetri, "00011102") != 0)
+   || (ft_strcmp(tetri, "00102011") != 0)
+   || (ft_strcmp(tetri, "10011112") != 0))
+	   free_and_die(p_ress, "error9");
 }
-*/
+
 void		check_bf(char *bf, size_t len, t_ress *p_ress)
 {
 	int		i;

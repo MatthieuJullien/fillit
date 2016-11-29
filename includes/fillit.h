@@ -11,6 +11,14 @@ typedef struct	s_ress
 	t_llist		*lst;
 }				t_ress;
 
+typedef struct	s_coord
+{
+	int			x;
+	int			y;
+	int			min_x;
+	int			min_y;
+}				t_coord;
+
 void		die(char *str);
 void		free_and_die(t_ress *p_ress, char *str);
 void		parse_input(char *filename, t_ress *p_ress);

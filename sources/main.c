@@ -85,7 +85,7 @@ t_tetri		parse_tetri(char *bf, size_t len, t_ress *p_ress)
 		}
 		i++;
 	}
-	//check_tetri(tetri, p_ress);
+	check_tetri(tetri, p_ress);
 	return (tetri);
 }
 
@@ -121,24 +121,24 @@ int			get_origin(char *bf)
 void		check_tetri(t_tetri tetri, t_ress *p_ress)
 {
    if ((ft_strcmp(tetri, "00102030") != 0)
-   || (ft_strcmp(tetri, "00010203") != 0)
-   || (ft_strcmp(tetri, "00100111") != 0)
-   || (ft_strcmp(tetri, "00102001") != 0)
-   || (ft_strcmp(tetri, "00101112") != 0)
-   || (ft_strcmp(tetri, "20011121") != 0)
-   || (ft_strcmp(tetri, "00010112") != 0)
-   || (ft_strcmp(tetri, "00102021") != 0)
-   || (ft_strcmp(tetri, "10110212") != 0)
-   || (ft_strcmp(tetri, "00011121") != 0)
-   || (ft_strcmp(tetri, "00100102") != 0)
-   || (ft_strcmp(tetri, "10200111") != 0)
-   || (ft_strcmp(tetri, "00011112") != 0)
-   || (ft_strcmp(tetri, "00101121") != 0)
-   || (ft_strcmp(tetri, "10011102") != 0)
-   || (ft_strcmp(tetri, "10011121") != 0)
-   || (ft_strcmp(tetri, "00011102") != 0)
-   || (ft_strcmp(tetri, "00102011") != 0)
-   || (ft_strcmp(tetri, "10011112") != 0))
+   && (ft_strcmp(tetri, "00010203") != 0)
+   && (ft_strcmp(tetri, "00100111") != 0)
+   && (ft_strcmp(tetri, "00102001") != 0)
+   && (ft_strcmp(tetri, "00101112") != 0)
+   && (ft_strcmp(tetri, "20011121") != 0)
+   && (ft_strcmp(tetri, "00010112") != 0)
+   && (ft_strcmp(tetri, "00102021") != 0)
+   && (ft_strcmp(tetri, "10110212") != 0)
+   && (ft_strcmp(tetri, "00011121") != 0)
+   && (ft_strcmp(tetri, "00100102") != 0)
+   && (ft_strcmp(tetri, "10200111") != 0)
+   && (ft_strcmp(tetri, "00011112") != 0)
+   && (ft_strcmp(tetri, "00101121") != 0)
+   && (ft_strcmp(tetri, "10011102") != 0)
+   && (ft_strcmp(tetri, "10011121") != 0)
+   && (ft_strcmp(tetri, "00011102") != 0)
+   && (ft_strcmp(tetri, "00102011") != 0)
+   && (ft_strcmp(tetri, "10011112") != 0))
 	   free_and_die(p_ress, "error9");
 }
 

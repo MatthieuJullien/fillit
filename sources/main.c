@@ -10,8 +10,10 @@
 
 int			main(int argc, char *argv[])
 {
-	t_llist			*lst_tetris;
-	t_ress	ress;
+	t_llist		*lst_tetris;
+	t_ress		ress;
+	char		**grid;
+	int			grid_size;
 
 	if (argc != 2)
 		die("usage: fillit input_file");
@@ -21,8 +23,53 @@ int			main(int argc, char *argv[])
 	ress.lst = lst_tetris;
 	parse_input(argv[1], &ress);
 	ft_llist_foreach(lst_tetris, (void *)&print);
+	if ((grid_size = init_grid(&grid, lst_tetris->size * 4)) == -1)
+		free_and_die(&ress, "error");
+	//solve(lst_tetris, grid);
+	print_grid(grid, grid_size);
+	ft_llist_destroy(&lst_tetris);
 	return (0);
 }
+
+void		print_grid(char **grid, int size)
+{
+	int		i;
+
+	i = 0;
+	while (i < size)
+	{
+		ft_putendl(grid[i]);
+		i++;
+	}
+}
+
+
+int			init_grid(char ***p_grid, int size)
+{
+	int		i;
+	int		j;
+	char	**grid;
+	;
+	i = 2;
+	while (i * i < size)
+		i++;
+	if (!(grid = (char **)malloc(sizeof(char *) * i)))
+		return -1;
+	j = 0;
+	while (j < i)
+	{
+		if (!(grid[j] = (char *)malloc(sizeof(char) * i)))
+			return -1;
+		ft_memset(grid[j], '.', i);
+		j++;
+	}
+	*p_grid = grid;
+	return (i);
+}
+
+
+
+
 
 void		print(void *tetri)
 {
@@ -120,26 +167,26 @@ int			get_origin(char *bf)
 
 void		check_tetri(t_tetri tetri, t_ress *p_ress)
 {
-   if ((ft_strcmp(tetri, "00102030") != 0)
-   && (ft_strcmp(tetri, "00010203") != 0)
-   && (ft_strcmp(tetri, "00100111") != 0)
-   && (ft_strcmp(tetri, "00102001") != 0)
-   && (ft_strcmp(tetri, "00101112") != 0)
-   && (ft_strcmp(tetri, "20011121") != 0)
-   && (ft_strcmp(tetri, "00010112") != 0)
-   && (ft_strcmp(tetri, "00102021") != 0)
-   && (ft_strcmp(tetri, "10110212") != 0)
-   && (ft_strcmp(tetri, "00011121") != 0)
-   && (ft_strcmp(tetri, "00100102") != 0)
-   && (ft_strcmp(tetri, "10200111") != 0)
-   && (ft_strcmp(tetri, "00011112") != 0)
-   && (ft_strcmp(tetri, "00101121") != 0)
-   && (ft_strcmp(tetri, "10011102") != 0)
-   && (ft_strcmp(tetri, "10011121") != 0)
-   && (ft_strcmp(tetri, "00011102") != 0)
-   && (ft_strcmp(tetri, "00102011") != 0)
-   && (ft_strcmp(tetri, "10011112") != 0))
-	   free_and_die(p_ress, "error9");
+	if ((ft_strcmp(tetri, "00102030") != 0)
+			&& (ft_strcmp(tetri, "00010203") != 0)
+			&& (ft_strcmp(tetri, "00100111") != 0)
+			&& (ft_strcmp(tetri, "00102001") != 0)
+			&& (ft_strcmp(tetri, "00101112") != 0)
+			&& (ft_strcmp(tetri, "20011121") != 0)
+			&& (ft_strcmp(tetri, "00010112") != 0)
+			&& (ft_strcmp(tetri, "00102021") != 0)
+			&& (ft_strcmp(tetri, "10110212") != 0)
+			&& (ft_strcmp(tetri, "00011121") != 0)
+			&& (ft_strcmp(tetri, "00100102") != 0)
+			&& (ft_strcmp(tetri, "10200111") != 0)
+			&& (ft_strcmp(tetri, "00011112") != 0)
+			&& (ft_strcmp(tetri, "00101121") != 0)
+			&& (ft_strcmp(tetri, "10011102") != 0)
+			&& (ft_strcmp(tetri, "10011121") != 0)
+			&& (ft_strcmp(tetri, "00011102") != 0)
+			&& (ft_strcmp(tetri, "00102011") != 0)
+			&& (ft_strcmp(tetri, "10011112") != 0))
+		free_and_die(p_ress, "error9");
 }
 
 void		check_bf(char *bf, size_t len, t_ress *p_ress)

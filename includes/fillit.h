@@ -8,6 +8,7 @@ typedef char	*t_tetri;
 typedef struct	s_ress
 {
 	int			fd;
+	int			grid_size;
 	t_llist		*lst;
 }				t_ress;
 
@@ -27,6 +28,8 @@ void		check_tetri(t_tetri tetri, t_ress *p_ress);
 void		check_bf(char *bf, size_t len, t_ress *p_ress);
 void		check_count(char *bf, t_ress *p_ress);
 int			get_origin(char *bf);
+void		print_grid(char **grid, int size);
+int			init_grid(char ***p_grid, int size);
 
 void		print(void *tetri);
 

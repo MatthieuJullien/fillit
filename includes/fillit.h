@@ -3,7 +3,11 @@
 
 #include "libft.h"
 
-typedef char	*t_tetri;
+typedef struct	s_tetri
+{
+	char		*coord;
+	int			position;
+}				*t_tetri;
 
 typedef struct	s_ress
 {
@@ -30,6 +34,11 @@ void		check_count(char *bf, t_ress *p_ress);
 int			get_origin(char *bf);
 void		print_grid(char **grid, int size);
 int			init_grid(char ***p_grid, int size);
+int			fill_grid(t_tetri tetri, char **grid, char sign, int x_cell, int y_cell, int grid_size);
+void		solve(t_llist *lst_tetris, char **grid, int grid_size);
+int			alloc_grid(char ***p_grid, int grid_size);
+void		unfill_grid(t_tetri tetri, char **grid, int coord);
+int			place(t_llnode *cur, char **grid, int grid_size, char sign);
 
 void		print(void *tetri);
 

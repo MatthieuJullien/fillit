@@ -28,10 +28,11 @@ int			get_origin(char *bf);
 void		free_and_die(t_ress *p_ress, char *str);
 
 int			grid_alloc(char ***p_grid, int grid_size);
-void		solve(t_llist *tetris, char **grid, int grid_size);
+int			solve(t_llist *tetris, char **grid, int grid_size);
 int			solve_grid(t_llist *tetris, char **grid, int grid_size);
 int			place(t_llnode *cur, char **grid, int grid_size);
-int			try_each_block(char *coord, char **grid, int x_cell, int y_cell, int grid_size);
+int			try_each_block(char *coord, char **grid, int x0, int y0, int grid_size);
+void		clear_tetri(t_tetri *tetri, char **grid);
 void		print_tetri(t_tetri *tetri, char **grid);
 void		print_grid(t_llist *tetris, char **grid, int size);
 

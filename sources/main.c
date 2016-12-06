@@ -31,52 +31,74 @@ int			main(int argc, char *argv[])
 	size = tetris->size * 4;
 	while (grid_size * grid_size < size)
 		grid_size++;
-	if ((grid_size = grid_alloc(&grid, size)) == -1)
+printf("grid sz=%d", grid_size);
+	if (grid_alloc(&grid, grid_size) == -1)
 		free_and_die(ress, "error");
-	solve(tetris, grid, grid_size);
+	grid_size = solve(tetris, grid, grid_size);
 	print_grid(tetris, grid, grid_size);
 	ft_llist_destroy(&tetris);
 
 	return (0);
 }
 
-void		solve(t_llist *tetris, char **grid, int grid_size)
+int			solve(t_llist *tetris, char **grid, int grid_size)
 {
-	while (!solve_grid(tetris, grid, grid_size))
+	while (!solve_grid(tetris, grid, grid_size) && grid_size < 7)
 	{
 		grid_size++;
 		if ((grid_alloc(&grid, grid_size)) == -1)
 			die("error");
 	}
+	return (grid_size);
 }
 
 int			solve_grid(t_llist *tetris, char **grid, int grid_size)
 {
 	t_llnode	*cur;
 
+print_grid(tetris, grid, grid_size);
+
 	cur = tetris->first;
 	while (cur != NULL && ((t_tetri *)cur->val)->position != -1)
-	{
-
-printf("pos = %d\n", ((t_tetri *)cur->val)->position);
 		cur = cur->next;
-	}
-printf("cur = %p\n", cur);
-	if ((((t_tetri *)cur->val)->position = place(cur, grid, grid_size)) > 0)
+	if (cur != NULL && ((((t_tetri *)cur->val)->position = place(cur, grid, grid_size)) > 0))
 	{
+		cur = tetris->first;
+		while (cur != NULL && ((t_tetri *)cur->val)->position != -1)
+			cur = cur->next;
+		if (cur == NULL)
+			return (1);
 		if (solve_grid(tetris, grid, grid_size) == 1)
 		{
-puts("ret 1");
 			return (1);
 		}
 		else
 		{
-puts("ret 0");
+			clear_tetri((t_tetri *)cur->val, grid);
 			return (0);
 		}
 	}
-puts("fin ret 0");
 	return (0);
+}
+
+void		clear_tetri(t_tetri *tetri, char **grid)
+{
+	int		block;
+	int		x;
+	int		y;
+	int		x0;
+	int		y0;
+
+	block = 0;
+	x0 = tetri->position / 100;
+	y0 = tetri->position % 100;
+	while (block < 4)
+	{
+		x = tetri->coord[block * 2] - '0';
+		y = tetri->coord[block * 2 + 1] - '0';
+		grid[y0 + y][x0 + x] = '.';
+		block++;
+	}
 }
 
 int			place(t_llnode *cur, char **grid, int grid_size)
@@ -101,28 +123,35 @@ int			place(t_llnode *cur, char **grid, int grid_size)
 	return (-1);
 }
 
-int			try_each_block(char *coord, char **grid, int x_cell, int y_cell, int grid_size)
+int			try_each_block(char *coord, char **grid, int x0, int y0, int grid_size)
 {
 	int		block;
-	int		x_tetri;
-	int		y_tetri;
+	int		x;
+	int		y;
 
 	block = 0;
 	while (block < 4)
 	{
-		x_tetri = coord[block * 2] - '0';
-		y_tetri = coord[block * 2 + 1] - '0';
-		if ((x_cell + x_tetri) >= grid_size
-				|| (y_cell + y_tetri) >= grid_size
-				|| grid[y_cell + y_tetri][x_cell + x_tetri] != '.')
+		x = coord[block * 2] - '0';
+		y = coord[block * 2 + 1] - '0';
+		if ((x0 + x) >= grid_size
+				|| (y0 + y) >= grid_size
+				|| grid[y0 + y][x0 + x] != '.')
 		{
-			//printf("Grid ko = %c\n", grid[y_cell + y_tetri][x_cell + x_tetri]);
+			//printf("Grid ko = %c\n", grid[y_cell + y][x_cell + x]);
 			return (0);
 		}
-		//printf("Grid ok = %c\n", grid[y_cell + y_tetri][x_cell + x_tetri]);
+		//printf("Grid ok = %c\n", grid[y_cell + y][x_cell + x]);
 		block++;
 	}
-
+	block = 0;
+	while (block < 4)
+	{
+		x = coord[block * 2] - '0';
+		y = coord[block * 2 + 1] - '0';
+		grid[y0 + y][x0 + x] = '#';
+		block++;
+	}
 	return (1);
 }
 
@@ -152,11 +181,14 @@ void		print_grid(t_llist *tetris, char **grid, int size)
 	t_llnode	*cur;
 
 	cur = tetris->first;
+	cur = cur->next;
+	/*
 	while (cur != NULL)
 	{
 		print_tetri(cur->val, grid);
 		cur = cur->next;
 	}
+*/
 	i = 0;
 	while (i < size)
 	{

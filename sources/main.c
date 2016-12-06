@@ -31,7 +31,6 @@ int			main(int argc, char *argv[])
 	size = tetris->size * 4;
 	while (grid_size * grid_size < size)
 		grid_size++;
-printf("grid sz=%d", grid_size);
 	if (grid_alloc(&grid, grid_size) == -1)
 		free_and_die(ress, "error");
 	grid_size = solve(tetris, grid, grid_size);
@@ -43,7 +42,7 @@ printf("grid sz=%d", grid_size);
 
 int			solve(t_llist *tetris, char **grid, int grid_size)
 {
-	while (!solve_grid(tetris, grid, grid_size) && grid_size < 7)
+	while (!solve_grid(tetris, grid, grid_size, 0, 0) && grid_size < 7)
 	{
 		grid_size++;
 		if ((grid_alloc(&grid, grid_size)) == -1)
@@ -52,32 +51,44 @@ int			solve(t_llist *tetris, char **grid, int grid_size)
 	return (grid_size);
 }
 
-int			solve_grid(t_llist *tetris, char **grid, int grid_size)
+int			solve_grid(t_llist *tetris, char **grid, int grid_size, int x, int y)
 {
 	t_llnode	*cur;
 
-print_grid(tetris, grid, grid_size);
+	print_grid(tetris, grid, grid_size);
 
-	cur = tetris->first;
-	while (cur != NULL && ((t_tetri *)cur->val)->position != -1)
-		cur = cur->next;
-	if (cur != NULL && ((((t_tetri *)cur->val)->position = place(cur, grid, grid_size)) > 0))
+	while (1)
 	{
 		cur = tetris->first;
 		while (cur != NULL && ((t_tetri *)cur->val)->position != -1)
 			cur = cur->next;
-		if (cur == NULL)
-			return (1);
-		if (solve_grid(tetris, grid, grid_size) == 1)
+
+		printf("On va tester le tetri %c qui est en %d\n", ((t_tetri *)cur->val)->sign, ((t_tetri *)cur->val)->position);
+
+
+		if (cur != NULL && ((((t_tetri *)cur->val)->position = place(cur, grid, grid_size)) >= 0))
 		{
-			return (1);
+			printf("On a place %c en %d\n", ((t_tetri *)cur->val)->sign, ((t_tetri *)cur->val)->position);
+			cur = tetris->first;
+			while (cur != NULL && ((t_tetri *)cur->val)->position != -1)
+				cur = cur->next;
+			if (cur == NULL)
+				return (1);
+			if (solve_grid(tetris, grid, grid_size) == 1)
+			{
+				return (1);
+			}
+			else
+			{
+
+				printf("On efface le tetri %c qui est en %d\n", ((t_tetri *)cur->val)->sign, ((t_tetri *)cur->val)->position);
+				clear_tetri((t_tetri *)cur->val, grid);
+			}
 		}
-		else
-		{
-			clear_tetri((t_tetri *)cur->val, grid);
-			return (0);
-		}
+		if (cur != NULL)
+((t_tetri *)cur->val)->position = -2;
 	}
+	printf("Il n'y a plus de tetri a placer\n");
 	return (0);
 }
 
@@ -99,6 +110,7 @@ void		clear_tetri(t_tetri *tetri, char **grid)
 		grid[y0 + y][x0 + x] = '.';
 		block++;
 	}
+	tetri->position = -1;
 }
 
 int			place(t_llnode *cur, char **grid, int grid_size)
@@ -109,8 +121,6 @@ int			place(t_llnode *cur, char **grid, int grid_size)
 	i = 0;
 	while (i < grid_size)
 	{
-		//printf("ligne=%d sign=%c\n", i, sign);
-		//printf("sz=%d\n", grid_size);
 		j = 0;
 		while (j < grid_size)
 		{
@@ -138,10 +148,11 @@ int			try_each_block(char *coord, char **grid, int x0, int y0, int grid_size)
 				|| (y0 + y) >= grid_size
 				|| grid[y0 + y][x0 + x] != '.')
 		{
-			//printf("Grid ko = %c\n", grid[y_cell + y][x_cell + x]);
+			//printf("Grid ko = %c\n", grid[y0 + y][x0 + x]);
+			printf("On ne peut pas placer le tetri en x=%d y=%d\n", x0, y0);
 			return (0);
 		}
-		//printf("Grid ok = %c\n", grid[y_cell + y][x_cell + x]);
+		//printf("Grid ok = %c\n", grid[y0 + y][x0 + x]);
 		block++;
 	}
 	block = 0;

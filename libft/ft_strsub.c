@@ -23,12 +23,10 @@ char	*ft_strsub(char const *s, unsigned int start, size_t len)
 	if (sub == NULL)
 		return (NULL);
 	i = 0;
-	while (len > 0)
+	while (i < len)
 	{
-		sub[i] = s[start];
+		sub[i] = s[start + i];
 		i++;
-		start++;
-		len--;
 	}
 	return (sub);
 }

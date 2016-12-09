@@ -3,22 +3,25 @@ CC			:=	gcc
 CFLAGS		:=	-Wall -Wextra -Werror
 
 SRCDIR		:=	sources
-SRCFILES	:=	main.c
+SRCFILES	:=	main.c \
+				grid.c \
+				parse.c \
+				check.c \
+				solve.c \
+				print.c
 SRC			:=	$(addprefix $(SRCDIR)/, $(SRCFILES))
 
 OBJDIR		:=	objects
 OBJ			:=	$(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRC))
 
 LIBFTDIR	:=	libft
+LIBFTINCDIR	:=	$(LIBFTDIR)/includes
 LIBFTFILE	:=	$(LIBFTDIR)/libft.a
 LIBFT		:=	-L $(LIBFTDIR) -lft
 
 INCDIR		:=	includes
 
-all: obj $(NAME)
-
-obj:
-	@mkdir -p $(OBJDIR)
+all: $(NAME)
 
 $(NAME): $(LIBFTFILE) $(OBJ)
 	@echo "Compiling" $(NAME)
@@ -29,8 +32,9 @@ $(LIBFTFILE):
 	@make -C $(LIBFTDIR)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
+	mkdir -p $(OBJDIR)
 	@echo "Compiling" $@
-	@$(CC) $(CFLAGS) -c -o $@ $< -I $(INCDIR) -I $(LIBFTDIR)
+	@$(CC) $(CFLAGS) -c -o $@ $< -I $(INCDIR) -I $(LIBFTINCDIR)
 
 clean:
 	@make -C $(LIBFTDIR) clean
@@ -47,4 +51,4 @@ fclean:
 
 re: fclean all
 
-.PHONY: all obj clean fclean re
+.PHONY: all clean fclean re

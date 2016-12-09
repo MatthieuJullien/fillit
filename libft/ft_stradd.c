@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   ft_stradd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: majullie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/22 15:37:52 by majullie          #+#    #+#             */
-/*   Updated: 2016/12/09 08:17:30 by majullie         ###   ########.fr       */
+/*   Created: 2016/11/25 09:02:41 by majullie          #+#    #+#             */
+/*   Updated: 2016/11/26 12:09:59 by majullie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-void	ft_putendl_fd(char const *s, int fd)
+void		ft_stradd(char **s1, char const *s2)
 {
-	if (s)
-	{
-		while (*s != '\0')
-		{
-			ft_putchar_fd(*s, fd);
-			s++;
-		}
-		ft_putchar_fd('\n', fd);
-	}
+	char	*str;
+
+	if (s1 == NULL || s2 == NULL)
+		return ;
+	if (*s1 == NULL)
+		*s1 = ft_strnew(0);
+	str = ft_strjoin(*s1, s2);
+	free(*s1);
+	*s1 = str;
 }

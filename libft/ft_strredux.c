@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   ft_strredux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: majullie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/22 15:37:52 by majullie          #+#    #+#             */
-/*   Updated: 2016/12/09 08:17:30 by majullie         ###   ########.fr       */
+/*   Created: 2016/12/06 08:53:15 by majullie          #+#    #+#             */
+/*   Updated: 2016/12/06 08:53:21 by majullie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
-void	ft_putendl_fd(char const *s, int fd)
+void	ft_strredux(char **s, unsigned int start, size_t len)
 {
-	if (s)
+	char	*sub;
+	size_t	i;
+
+	sub = ft_strnew(len);
+	i = 0;
+	while (i < len)
 	{
-		while (*s != '\0')
-		{
-			ft_putchar_fd(*s, fd);
-			s++;
-		}
-		ft_putchar_fd('\n', fd);
+		sub[i] = (*s)[start + i];
+		i++;
 	}
+	free(*s);
+	*s = sub;
 }

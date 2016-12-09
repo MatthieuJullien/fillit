@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   ft_max.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: majullie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/22 15:37:52 by majullie          #+#    #+#             */
-/*   Updated: 2016/12/09 08:17:30 by majullie         ###   ########.fr       */
+/*   Created: 2016/12/06 08:54:37 by majullie          #+#    #+#             */
+/*   Updated: 2016/12/06 08:54:40 by majullie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-void	ft_putendl_fd(char const *s, int fd)
+int			ft_max(int x, int y)
 {
-	if (s)
-	{
-		while (*s != '\0')
-		{
-			ft_putchar_fd(*s, fd);
-			s++;
-		}
-		ft_putchar_fd('\n', fd);
-	}
+	if (x > y)
+		return (x);
+	return (y);
+}
+
+float		ft_fmax(float x, float y)
+{
+	if (x > y)
+		return (x);
+	return (y);
+}
+
+double		ft_dmax(double x, double y)
+{
+	if (x > y)
+		return (x);
+	return (y);
 }
